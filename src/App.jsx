@@ -41,7 +41,6 @@ function App() {
     };
 
     return (
-    return (
         <ErrorBoundary>
             <motion.div
                 variants={containerVariants}
