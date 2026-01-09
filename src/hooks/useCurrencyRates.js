@@ -48,6 +48,11 @@ export const useCurrencyRates = (baseCurrency) => {
                 if (!response.ok) throw new Error('Failed to fetch rates');
 
                 const data = await response.json();
+
+                if (!data.rates) {
+                    throw new Error(data['error-type'] || 'Invalid API response');
+                }
+
                 setRates(data.rates);
                 const now = new Date();
                 setLastUpdated(now.toLocaleString());

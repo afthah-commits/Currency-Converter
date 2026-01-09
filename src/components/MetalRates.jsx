@@ -5,8 +5,27 @@ import { Search, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const MetalRates = ({ base, title, onBack }) => {
-    const { rates, isLoading, error, lastUpdated } = useCurrencyRates(base);
+    // Always fetch USD rates as base since free API doesn't support XAU/XAG base
+    const { rates: usdRates, isLoading, error, lastUpdated } = useCurrencyRates('USD');
     const [searchTerm, setSearchTerm] = useState('');
+
+    // Calculate rates relative to the metal (base)
+    // Rate(Metal -> Currency) = Rate(USD -> Currency) / Rate(USD -> Metal)
+    const metalRateInUSD = usdRates[base]; // This is how much Metal 1 USD buys (e.g. 0.0005 XAU)
+
+    // We want: 1 Unit of Metal = ??? Currency
+    // So we need: Price of 1 Metal in USD = 1 / metalRateInUSD
+    // Then convert that USD amount to target currency.
+    // Equivalent to: targetCurrencyRate / metalRateInUSD
+
+    const rates = {};
+    if (metalRateInUSD) {
+        Object.entries(usdRates).forEach(([currency, rate]) => {
+            if (currency !== base) {
+                rates[currency] = rate / metalRateInUSD;
+            }
+        });
+    }
 
     const filteredRates = Object.entries(rates).filter(([currency]) => {
         const name = currencyNames[currency] || '';
