@@ -45,16 +45,24 @@ const MetalRates = ({ base, title, onBack }) => {
 
     const OUNCE_TO_GRAM = 31.1035;
 
+    const handleBack = () => {
+        if (selectedCurrency) {
+            setSelectedCurrency(null);
+        } else {
+            onBack();
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
+            style={{ width: '100%', display: 'flex', flexDirection: 'column' }}
         >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <button
-                    onClick={selectedCurrency ? () => setSelectedCurrency(null) : onBack}
+                    onClick={handleBack}
                     className="btn-icon"
                 >
                     <ArrowLeft size={20} />
@@ -127,7 +135,7 @@ const MetalRates = ({ base, title, onBack }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+                        style={{ display: 'flex', flexDirection: 'column' }}
                     >
                         <div style={{ marginBottom: '1rem', position: 'relative' }}>
                             <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
@@ -154,7 +162,7 @@ const MetalRates = ({ base, title, onBack }) => {
                         ) : error ? (
                             <div className="bento-card" style={{ color: 'red' }}>Error: {error}</div>
                         ) : (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '400px', overflowY: 'auto' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                 {filteredRates.length > 0 ? (
                                     filteredRates.map(([currency, rate]) => (
                                         <motion.div
