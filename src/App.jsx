@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useCurrencyRates } from './hooks/useCurrencyRates';
 import CurrencyInput from './components/CurrencyInput';
 import SwapButton from './components/SwapButton';
