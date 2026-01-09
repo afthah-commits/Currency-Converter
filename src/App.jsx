@@ -89,9 +89,18 @@ function App() {
                     {view === 'converter' ? (
                         <motion.div
                             key="converter"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: 20 }}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            variants={{
+                                hidden: { opacity: 0, x: -20 },
+                                visible: {
+                                    opacity: 1,
+                                    x: 0,
+                                    transition: { staggerChildren: 0.05 }
+                                },
+                                exit: { opacity: 0, x: 20 }
+                            }}
                             style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
                         >
                             {isLoading && Object.keys(rates).length === 0 ? (
