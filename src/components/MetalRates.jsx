@@ -11,7 +11,17 @@ const MetalRates = ({ base, title, onBack }) => {
 
     // Calculate rates relative to the metal (base)
     // Rate(Metal -> Currency) = Rate(USD -> Currency) / Rate(USD -> Metal)
-    const metalRateInUSD = usdRates[base]; // This is how much Metal 1 USD buys (e.g. 0.0005 XAU)
+
+    // Fallback if API doesn't have XAU/XAG (Open Exchange Rates free tier might not)
+    // Mock rates for fallback: 1 XAU ~ 2600 USD, 1 XAG ~ 31 USD (approximate)
+    // USD -> XAU = 1/2600 = 0.00038
+    // USD -> XAG = 1/31 = 0.032
+    const fallbackRates = {
+        'XAU': 0.00038,
+        'XAG': 0.032
+    };
+
+    const metalRateInUSD = usdRates[base] || fallbackRates[base];
 
     // We want: 1 Unit of Metal = ??? Currency
     // So we need: Price of 1 Metal in USD = 1 / metalRateInUSD
